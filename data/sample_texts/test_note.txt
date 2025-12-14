@@ -1,0 +1,1 @@
+This is a test note about the AI Workspace Assistant. It talks about how the project indexes and summarizes files.
