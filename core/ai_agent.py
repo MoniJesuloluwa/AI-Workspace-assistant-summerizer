@@ -50,4 +50,39 @@ class AIAgent:
         )
 
         return response.choices[0].message.content
+    
+    # ----------------------------
+    # Classification
+    # ----------------------------
+    def classify_text(self, text: str, labels=None) -> str:
+        """
+        Classify the given text into one of the provided labels.
+        If no labels provided, use a default set.
+        """
+        if labels is None:
+            labels = ["code", "notes", "school", "work", "finance", "personal", "other"]
+
+        # Trim very long text
+        if len(text) > 4000:
+            text = text[:4000]
+
+        label_str = ", ".join(labels)
+        prompt = (
+            "You are a classifier. "
+            f"Choose exactly ONE label from this list: {label_str}.\n\n"
+            "Return only the label, nothing else.\n\n"
+            f"Text:\n{text}"
+        )
+
+        response = self.client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a strict one-label classifier."},
+                {"role": "user", "content": prompt},
+            ],
+            max_tokens=10,
+        )
+
+        return response.choices[0].message.content.strip()
+
 

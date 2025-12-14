@@ -79,6 +79,35 @@ class CLI:
 
         for file_id, content in pending:
             summary = self.ai.summarize_text(content)
-            self.manager.update_summary(file_id, summary)
+            category = self.ai.classify_text(content)
+            self.manager.update_summary(file_id, summary, category)
 
-        self.console.print("[green]Summaries generated and saved![/]")
+        self.console.print("[green]Summaries and categories generated and saved![/]")
+
+    # ----------------------------
+    # SHOW ALL SUMMARIES
+    # ----------------------------
+    def show_summaries(self, limit=20):
+        files = self.manager.list_files_with_summaries(limit=limit)
+
+        if not files:
+            self.console.print("[yellow]No files indexed yet.[/]")
+            return
+
+        table = Table(title=f"Files + Summaries (showing {limit} max)")
+        table.add_column("ID", style="cyan")
+        table.add_column("Name")
+        table.add_column("Category")
+        table.add_column("Summary", overflow="fold")
+        table.add_column("Path", overflow="fold")
+
+        for f in files:
+            file_id, name, summary, category, path = f
+            if summary and len(summary) > 180:
+                summary_display = summary[:177] + "..."
+            else:
+                summary_display = summary or ""
+            table.add_row(str(file_id), name, str(category or "-"), summary_display, path)
+
+        self.console.print(table)
+

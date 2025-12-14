@@ -119,11 +119,18 @@ class WorkspaceManager:
         """, (limit,))
         return cursor.fetchall()
 
-    def update_summary(self, file_id: int, summary: str):
+    def update_summary(self, file_id: int, summary: str, category: str | None = None):
         cursor = self.conn.cursor()
-        cursor.execute("""
-            UPDATE files
-            SET summary = ?
-            WHERE id = ?;
-        """, (summary, file_id))
+        if category is None:
+            cursor.execute("""
+                UPDATE files
+                SET summary = ?
+                WHERE id = ?;
+            """, (summary, file_id))
+        else:
+            cursor.execute("""
+                UPDATE files
+                SET summary = ?, category = ?
+                WHERE id = ?;
+            """, (summary, category, file_id))
         self.conn.commit()

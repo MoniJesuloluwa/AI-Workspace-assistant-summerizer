@@ -40,8 +40,17 @@ def main():
     elif args.command == "summarize":
         cli.summarize(limit=args.limit)
 
+    elif args.command == "show-summaries":
+        cli.show_summaries(limit=args.limit)
+
     else:
         parser.print_help()
+
+
+    # show-summaries
+    show_parser = subparsers.add_parser("show-summaries", help="Show files with their AI summaries")
+    show_parser.add_argument("--limit", type=int, default=20, help="Max files to show")
+
 
 
 if __name__ == "__main__":
