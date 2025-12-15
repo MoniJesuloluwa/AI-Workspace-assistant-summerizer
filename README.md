@@ -48,40 +48,33 @@ ai_workspace_assistant/
 ├── requirements.txt
 ├── .env.example
 └── README.md
+
 ⚙️ Installation
 1️⃣ Set up your environment
-bash
-Copy code
 python3 -m venv venv
 source venv/bin/activate
+
 2️⃣ Install dependencies
-bash
-Copy code
 pip install -r requirements.txt
+
 3️⃣ Add your API key
 Create a .env file:
-
-ini
-Copy code
 OPENAI_API_KEY=api-key
 OPENAI_MODEL=gpt-4o-mini
+
 🧠 Example Usage
 Index a folder
-bash
-Copy code
 python main.py index --path data/sample_texts
+
 Generate summaries
-bash
-Copy code
 python main.py summarize --limit 5
+
 List all files
-bash
-Copy code
 python main.py list
+
 Search for files
-bash
-Copy code
 python main.py search --q "AI"
+
 🛠️ Technologies Used
 Python 3.11+
 
